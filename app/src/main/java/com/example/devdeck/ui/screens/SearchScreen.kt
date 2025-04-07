@@ -11,10 +11,16 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.devdeck.util.UiState
 import com.example.devdeck.viewmodel.UserViewModel
 
+
 @Composable
-fun SearchScreen(viewModel: UserViewModel) {
+fun SearchScreen(
+    viewModel: UserViewModel,
+    onNavigateToProfile: (String) -> Unit
+) {
     var username by remember { mutableStateOf("") }
     val state by viewModel.state.collectAsState()
+
+    var hasNavigated by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -35,6 +41,7 @@ fun SearchScreen(viewModel: UserViewModel) {
             onClick = {
                 if (username.isNotBlank()) {
                     viewModel.fetchUser(username)
+                    hasNavigated = false
                 }
             },
             modifier = Modifier.fillMaxWidth()
@@ -44,7 +51,6 @@ fun SearchScreen(viewModel: UserViewModel) {
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Observe the ViewModel's state and show result
         when (state) {
             is UiState.Loading -> {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
@@ -53,22 +59,11 @@ fun SearchScreen(viewModel: UserViewModel) {
             is UiState.Success -> {
                 val user = (state as UiState.Success).user
 
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Image(
-                        painter = rememberAsyncImagePainter(user.avatar_url),
-                        contentDescription = "Avatar",
-                        modifier = Modifier
-                            .size(100.dp)
-                            .padding(8.dp)
-                    )
-                    Text("Username: ${user.login}")
-                    user.name?.let { Text("Name: $it") }
-                    user.bio?.let { Text("Bio: $it") }
-                    Text("Followers: ${user.followers}")
-                    Text("Following: ${user.following}")
+                if (!hasNavigated) {
+                    LaunchedEffect(Unit) {
+                        hasNavigated = true
+                        onNavigateToProfile(user.login)
+                    }
                 }
             }
 
@@ -79,6 +74,8 @@ fun SearchScreen(viewModel: UserViewModel) {
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             }
+
+            UiState.Idle -> { /* No-op */ }
         }
     }
 }

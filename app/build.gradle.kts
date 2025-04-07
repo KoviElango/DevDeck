@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation.runtime.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -81,6 +82,10 @@ dependencies {
 
     //Interceptor
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+    //navigation
+    implementation("androidx.navigation:navigation-compose:2.7.5")
+
 
     //coil
     implementation("io.coil-kt:coil-compose:2.2.2")
