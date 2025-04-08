@@ -104,24 +104,18 @@ class UserViewModel : ViewModel() {
         _state.value = UiState.Idle
     }
 
-    private val searchManager = RecentSearchManager()
-    private val _recentSearches = MutableStateFlow<List<String>>(searchManager.getSearches())
+    //Recent searches -we keep the state here but the logic is moved to RecentSearchManager
+    private val recentSearchManager = RecentSearchManager()
+    private val _recentSearches = MutableStateFlow<List<String>>(emptyList())
+
     val recentSearches: StateFlow<List<String>> = _recentSearches
 
     @RequiresApi(35)
     fun addRecentSearch(username: String) {
-        val current = _recentSearches.value.toMutableList()
-        if (!current.contains(username)) {
-            current.add(0, username)
-            if (current.size > 5) current.removeLast()
-            _recentSearches.value = current
-        }
+        _recentSearches.value = recentSearchManager.add(username)
     }
 
-
     fun removeRecentSearch(username: String) {
-        _recentSearches.value = _recentSearches.value.toMutableList().also {
-            it.remove(username)
-        }
+        _recentSearches.value = recentSearchManager.remove(username)
     }
 }
