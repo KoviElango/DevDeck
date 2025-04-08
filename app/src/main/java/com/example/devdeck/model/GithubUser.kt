@@ -6,5 +6,6 @@ data class GithubUser(
     val avatar_url: String,
     val bio: String?,
     val followers: Int,
-    val following: Int
+    val following: Int,
+    val id: Int
 )
