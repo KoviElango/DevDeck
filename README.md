@@ -1,3 +1,5 @@
+![DevDeck Logo](https://github.com/KoviElango/DevDeck/blob/master/app/src/main/res/drawable/devdeck_logo.png?raw=true)
+
 # DevDeck
 
 DevDeck is a simple Android application built using Kotlin and Jetpack Compose. It allows users to search for GitHub profiles, view user details, and explore their followers and following lists. The application leverages GitHub's public API and is designed to be beginner-friendly, clean, and minimal.
