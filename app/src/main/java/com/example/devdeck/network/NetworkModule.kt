@@ -3,6 +3,7 @@ package com.example.devdeck.network
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+//Singleton object for Retrofit instance
 object NetworkModule {
     private const val BASE_URL = "https://api.github.com/"
 

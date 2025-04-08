@@ -13,9 +13,11 @@ import kotlinx.coroutines.launch
 
 class UserViewModel : ViewModel() {
 
+    // Holds UI state for single user fetch operations
     private val _state = MutableStateFlow<UiState>(UiState.Idle)
     val state: StateFlow<UiState> = _state
 
+    // Holds UI state for pagination
     private val _listState = MutableStateFlow<ListUiState>(ListUiState.Loading)
     val listState: StateFlow<ListUiState> = _listState
 
@@ -26,6 +28,13 @@ class UserViewModel : ViewModel() {
 
     private val loadedUsers = mutableListOf<UserListItem>()
 
+    /**
+     * Fetches a paginated list of followers or following for a given user.
+     *
+     * @param username GitHub username
+     * @param isFollowers true for followers, false for following
+     * @param isInitialLoad true if this is the first page or a refresh
+     */
     fun fetchPagedUserList(username: String, isFollowers: Boolean, isInitialLoad: Boolean = true) {
         if (_isLoadingMore) return
 
@@ -63,6 +72,11 @@ class UserViewModel : ViewModel() {
         }
     }
 
+    /**
+     * Fetches detailed information about a single GitHub user.
+     *
+     * @param username GitHub username
+     */
     fun fetchUser(username: String) {
         viewModelScope.launch {
             _state.value = UiState.Loading
@@ -79,6 +93,7 @@ class UserViewModel : ViewModel() {
         }
     }
 
+    //Resets the single user UI state to idle.
     fun resetState() {
         _state.value = UiState.Idle
     }

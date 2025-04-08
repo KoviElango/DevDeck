@@ -21,6 +21,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.devdeck.model.GithubUser
 import com.example.devdeck.ui.components.FloatingSearchButton
 
+//unique background colors for each profile
 private val cardBackgrounds = listOf(
     Color(0xFF381010),
     Color(0xFF2E2519),
@@ -30,6 +31,14 @@ private val cardBackgrounds = listOf(
     Color(0xFF421E36)
 )
 
+/**
+ * Card-style profile details of a GitHub user
+ *
+ * @param user The GitHub user whose profile is displayed.
+ * @param onFollowersClick Callback triggered when followers section is tapped.
+ * @param onFollowingClick Callback triggered when following section is tapped.
+ * @param onSearchClick Callback triggered when floating search button is pressed.
+ */
 @Composable
 fun UserProfileScreen(
     user: GithubUser,
@@ -118,6 +127,15 @@ fun UserProfileScreen(
         }
     }
 }
+
+/**
+ * follower and following stats with clickable feature.
+ *
+ * @param followers Number of followers.
+ * @param following Number of following.
+ * @param onFollowersClick Callback for tapping on followers.
+ * @param onFollowingClick Callback for tapping on following.
+ */
 
 @Composable
 fun FollowStatsSection(

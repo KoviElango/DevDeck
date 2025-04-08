@@ -7,6 +7,18 @@ import androidx.compose.ui.Modifier
 import com.example.devdeck.util.UiState
 import com.example.devdeck.viewmodel.UserViewModel
 
+
+/**
+ * Wrapper that observes user profile state and renders
+ * renders either the profile screen or UI based on loading/error states.
+ *
+ * @param username GitHub username to fetch the profile for.
+ * @param viewModel ViewModel handling user data.
+ * @param onFollowersClick Callback invoked with username when followers are clicked.
+ * @param onFollowingClick Callback invoked with username when following is clicked.
+ * @param onSearchClick Callback invoked when the FAB is clicked to return to search.
+ */
+
 @Composable
 fun UserProfileScreenWrapper(
     username: String,
@@ -35,7 +47,9 @@ fun UserProfileScreenWrapper(
         is UiState.Error -> {
             Text(text = (state as UiState.Error).message)
         }
-        UiState.Idle -> { /* No-op */ }
+        UiState.Idle -> {
+            //no-op
+        }
     }
 }
 

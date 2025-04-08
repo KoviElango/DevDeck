@@ -17,7 +17,18 @@ import com.example.devdeck.ui.components.FloatingSearchButton
 import com.example.devdeck.util.ListUiState
 import com.example.devdeck.viewmodel.UserViewModel
 
+//background color, the font color need not be changed as material design is adaptive to background color
 private val listBackground = Color(0xFF2A313C)
+
+/**
+ * Displays a scrollable list of followers or following users.
+ *
+ * @param username The GitHub username for whom the list is shown.
+ * @param isFollowers Determines if the list is of followers or following.
+ * @param viewModel The ViewModel that manages list fetching and state.
+ * @param onUserClick Callback invoked when a user in the list is clicked.
+ * @param onSearchClick Callback invoked when the floating search button is clicked.
+ */
 
 @Composable
 fun UserListScreen(
@@ -30,9 +41,12 @@ fun UserListScreen(
     val state by viewModel.listState.collectAsState()
     val listState = rememberLazyListState()
 
+    //initial list
     LaunchedEffect(username, isFollowers) {
         viewModel.fetchPagedUserList(username, isFollowers, isInitialLoad = true)
     }
+
+    //triggers fetch for more items when the user scrolls to the end of the list
     LaunchedEffect(listState) {
         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
             .collect { lastVisibleIndex ->
@@ -103,7 +117,7 @@ fun UserListScreen(
                                 )
                             }
                         }
-
+                        //loading indicator
                         if (viewModel.isLoadingMore) {
                             item {
                                 Box(

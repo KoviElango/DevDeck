@@ -6,10 +6,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.example.devdeck.util.UiState
 import com.example.devdeck.viewmodel.UserViewModel
+
+/**
+ * Screen that allows the user to search for a GitHub profile by username.
+ *
+ * @param viewModel The ViewModel responsible for managing user fetch state.
+ * @param onNavigateToProfile Callback invoked with the username when a user is found.
+ */
 
 @Composable
 fun SearchScreen(
@@ -73,6 +79,7 @@ fun SearchScreen(
                    // CircularProgressIndicator(color = Color.White)
                 }
 
+                // Navigate only when user is successfully fetched, once
                 is UiState.Success -> {
                     val user = (state as UiState.Success).user
                     if (!hasNavigated) {
