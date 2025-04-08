@@ -91,5 +91,6 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.2.2")
     //icon pack
     implementation("androidx.compose.material:material-icons-extended")
-
+    //splashscreen
+    implementation ("androidx.core:core-splashscreen:1.0.1")
 }

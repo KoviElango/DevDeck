@@ -83,7 +83,7 @@ fun UserProfileScreen(
                                 .size(190.dp)
                                 .padding(bottom = 16.dp)
                                 .clip(CircleShape)
-                                .border(3.dp, Color.White, CircleShape)
+                                .border(4.dp, Color.White, CircleShape)
                         ) {
                             Image(
                                 painter = rememberAsyncImagePainter(user.avatar_url),

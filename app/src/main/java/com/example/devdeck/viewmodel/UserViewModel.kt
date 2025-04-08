@@ -1,6 +1,7 @@
 package com.example.devdeck.viewmodel
 
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.devdeck.model.GithubUser
@@ -102,5 +103,26 @@ class UserViewModel : ViewModel() {
     //Resets the single user UI state to idle.
     fun resetState() {
         _state.value = UiState.Idle
+    }
+
+    private val searchManager = RecentSearchManager()
+    private val _recentSearches = MutableStateFlow<List<String>>(searchManager.getSearches())
+    val recentSearches: StateFlow<List<String>> = _recentSearches
+
+    @RequiresApi(35)
+    fun addRecentSearch(username: String) {
+        val current = _recentSearches.value.toMutableList()
+        if (!current.contains(username)) {
+            current.add(0, username)
+            if (current.size > 5) current.removeLast()
+            _recentSearches.value = current
+        }
+    }
+
+
+    fun removeRecentSearch(username: String) {
+        _recentSearches.value = _recentSearches.value.toMutableList().also {
+            it.remove(username)
+        }
     }
 }

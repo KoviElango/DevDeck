@@ -1,21 +1,18 @@
 package com.example.devdeck.ui.screens
 
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.devdeck.ui.components.RecentSearchList
 import com.example.devdeck.util.UiState
 import com.example.devdeck.viewmodel.UserViewModel
-
-/**
- * Screen that allows the user to search for a GitHub profile by username.
- *
- * @param viewModel The ViewModel responsible for managing user fetch state.
- * @param onNavigateToProfile Callback invoked with the username when a user is found.
- */
 
 @Composable
 fun SearchScreen(
@@ -25,6 +22,7 @@ fun SearchScreen(
     var username by remember { mutableStateOf("") }
     val state by viewModel.state.collectAsState()
     var hasNavigated by remember { mutableStateOf(false) }
+    val recentSearches by viewModel.recentSearches.collectAsState()
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -32,54 +30,78 @@ fun SearchScreen(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 24.dp),
-            verticalArrangement = Arrangement.Center,
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp, vertical = 48.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            OutlinedTextField(
-                value = username,
-                onValueChange = { username = it },
-                label = { Text("Enter GitHub Username", color = Color.White) },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White,
-                    focusedBorderColor = Color.White,
-                    unfocusedBorderColor = Color.Gray,
-                    focusedLabelColor = Color.White,
-                    unfocusedLabelColor = Color.Gray,
-                    cursorColor = Color.White
-                )
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(
-                onClick = {
-                    if (username.isNotBlank()) {
-                        viewModel.fetchUser(username)
-                        hasNavigated = false
-                    }
-                },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.White,
-                    contentColor = Color(0xFF2A313C)
-                )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
             ) {
-                Text("Search")
+                OutlinedTextField(
+                    value = username,
+                    onValueChange = { username = it },
+                    label = { Text("GitHub Username", color = Color.White) },
+                    singleLine = true,
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = Color.White,
+                        unfocusedTextColor = Color.White,
+                        focusedBorderColor = Color.White,
+                        unfocusedBorderColor = Color.Gray,
+                        focusedLabelColor = Color.White,
+                        unfocusedLabelColor = Color.Gray,
+                        cursorColor = Color.White
+                    )
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Button(
+                    onClick = {
+                        if (username.isNotBlank()) {
+                            viewModel.addRecentSearch(username)
+                            viewModel.fetchUser(username)
+                            hasNavigated = false
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .aspectRatio(1f),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.White,
+                        contentColor = Color(0xFF2A313C)
+                    ),
+                    contentPadding = PaddingValues(0.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Search,
+                        contentDescription = "Search",
+                        modifier = Modifier
+                            .size(32.dp),
+                        tint = Color(0xFF2A313C)
+                    )
+                }
+
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(24.dp))
+
+            RecentSearchList(
+                items = recentSearches,
+                onItemClick = { selected -> username = selected },
+                onItemRemove = { removed -> viewModel.removeRecentSearch(removed) }
+            )
 
             when (state) {
                 is UiState.Loading -> {
-                   // CircularProgressIndicator(color = Color.White)
+                    CircularProgressIndicator(color = Color.White)
                 }
 
-                // Navigate only when user is successfully fetched, once
                 is UiState.Success -> {
                     val user = (state as UiState.Success).user
                     if (!hasNavigated) {
