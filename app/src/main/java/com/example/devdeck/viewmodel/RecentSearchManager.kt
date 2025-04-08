@@ -22,5 +22,4 @@ class RecentSearchManager(
         return recentList.toList()
     }
 
-    fun getAll(): List<String> = recentList.toList()
 }
