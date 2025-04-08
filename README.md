@@ -23,3 +23,8 @@ DevDeck is a simple Android application built using Kotlin and Jetpack Compose. 
 - **State Management:** StateFlow + ViewModel  
 
 ---
+
+Notes
+- The app uses the GitHub public API, which has rate limits for unauthenticated users.
+- No login is required.
+- Designed as an MVP (Minimum Viable Product) and open to contributions or expansion.
