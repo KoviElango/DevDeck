@@ -16,7 +16,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.devdeck.ui.components.FloatingSearchButton
 import com.example.devdeck.util.ListUiState
 import com.example.devdeck.viewmodel.UserViewModel
-import android.util.Log
+
 
 
 //background color, the font color need not be changed as material design is adaptive to background color

@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun FloatingSearchButton(
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
 ) {
     FloatingActionButton(
         onClick = onClick,

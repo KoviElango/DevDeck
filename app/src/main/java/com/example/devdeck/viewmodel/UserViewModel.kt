@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.devdeck.model.GithubUser
 import com.example.devdeck.model.UserListItem
 import com.example.devdeck.network.NetworkModule
 import com.example.devdeck.util.ListUiState

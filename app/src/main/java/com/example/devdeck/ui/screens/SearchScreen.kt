@@ -14,6 +14,7 @@ import com.example.devdeck.ui.components.RecentSearchList
 import com.example.devdeck.util.UiState
 import com.example.devdeck.viewmodel.UserViewModel
 
+@RequiresApi(35)
 @Composable
 fun SearchScreen(
     viewModel: UserViewModel,
