@@ -46,6 +46,7 @@ fun UserProfileScreen(
     onFollowingClick: () -> Unit,
     onSearchClick: () -> Unit
 ) {
+    //this is to cycle through the background colors and assign a unique color to each profile
     val backgroundColor = cardBackgrounds[user.id % cardBackgrounds.size]
 
     Scaffold(

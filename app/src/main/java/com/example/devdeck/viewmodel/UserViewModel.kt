@@ -1,5 +1,6 @@
 package com.example.devdeck.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.devdeck.model.GithubUser
@@ -36,7 +37,11 @@ class UserViewModel : ViewModel() {
      * @param isInitialLoad true if this is the first page or a refresh
      */
     fun fetchPagedUserList(username: String, isFollowers: Boolean, isInitialLoad: Boolean = true) {
-        if (_isLoadingMore) return
+        Log.d("PaginationDebug", "fetchPagedUserList called | page=$currentPage | initial=$isInitialLoad")
+        if (_isLoadingMore) {
+            Log.d("PaginationDebug", "Currently loading. Skipping new request.")
+            return
+        }
 
         if (isInitialLoad) {
             currentPage = 1
@@ -59,7 +64,7 @@ class UserViewModel : ViewModel() {
                 if (response.isSuccessful && response.body() != null) {
                     val newUsers = response.body()!!
                     loadedUsers.addAll(newUsers)
-                    _listState.value = ListUiState.Success(loadedUsers)
+                    _listState.value = ListUiState.Success(loadedUsers.toList())
                     if (newUsers.isNotEmpty()) currentPage++
                 } else {
                     _listState.value = ListUiState.Error("No users found.")
@@ -68,6 +73,7 @@ class UserViewModel : ViewModel() {
                 _listState.value = ListUiState.Error("Error loading users.")
             } finally {
                 _isLoadingMore = false
+                Log.d("PaginationDebug", "Finished loading. isLoadingMore reset to false.")
             }
         }
     }

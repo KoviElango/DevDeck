@@ -16,6 +16,8 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.devdeck.ui.components.FloatingSearchButton
 import com.example.devdeck.util.ListUiState
 import com.example.devdeck.viewmodel.UserViewModel
+import android.util.Log
+
 
 //background color, the font color need not be changed as material design is adaptive to background color
 private val listBackground = Color(0xFF2A313C)
@@ -54,6 +56,7 @@ fun UserListScreen(
                 if (lastVisibleIndex != null && lastVisibleIndex >= totalItems - 5) {
                     viewModel.fetchPagedUserList(username, isFollowers, isInitialLoad = false)
                 }
+                //Log.d("PaginationDebug", "Last visible index: $lastVisibleIndex / Total items: $totalItems")
             }
     }
 
